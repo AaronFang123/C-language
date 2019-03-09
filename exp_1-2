@@ -1,0 +1,226 @@
+//线性表顺序存储结构的10种基本操作 
+//初始化、长度计算、取元素、定位、前驱计算、后继计算、前插、删除、判空、遍历
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h> 
+
+#define ElemType int 
+#define MaxSize 50
+
+typedef struct {
+	ElemType data[MaxSize];
+	int length; 
+}SqList;
+
+//创建顺序表 
+SqList* CreatList( ElemType a[], int n){  //创建好L所指的顺序表后须传给对应的实参 
+	int i = 0, k = 0;
+	SqList *L;
+	L = (SqList*)malloc(sizeof(SqList));
+	while(i < n){
+		L->data[k] = a[i];
+		k++;
+		i++;
+	}
+	L->length = k;
+	return L;
+} 
+
+/*初始化线性表
+SqList* InitList(SqList *&L){
+	L = (SqList *)malloc (sizeof (SqList));
+	L->length = 0;
+	return L
+}
+*/
+//销毁线性表
+void DestoryList(SqList *L){
+	free(L);
+} 
+
+//判断是否为空表
+bool ListEmpty(SqList* L){
+	return (L->length == 0);
+}
+
+//求线性表的长度
+void ListLength(SqList *L){
+	printf("%d\n", L->length) ;
+} 
+
+//遍历并输出线性表
+void DisplayList(SqList *L){
+	int i;
+	for(i = 0;i < L->length; i++){
+		printf("%d\n", L->data[i]);
+	}
+} 
+
+//查找线性表中某个数据值
+void GetElem(SqList *L, int i){
+	if(i < 1||i > L->length) {
+		 printf("illegel input\n");
+		 return;
+	}
+	printf("%d\n",L->data[i - 1]) ;
+} 
+
+//按元素值查找 定位 
+void LocateELem(SqList *L, ElemType e){
+	int i = 0;
+	while(i< L->length && L->data[i] != e)  i++;
+	if(i>= L->length)   printf("illegel input\n");
+	else printf("在顺序表的第%d位\n", i+1) ;
+} 
+
+//前插数据
+SqList* ListInsert(SqList *L, int i, ElemType e){
+	int j;
+	SqList *temp = L;
+		if(i < 1||i > temp->length + 1)  printf("illegel input\n");
+		i--;
+		for(j = temp->length;j >i; j--)
+		  temp->data[j] = temp->data[j-1];
+  		temp->data[i] = e;
+  		temp->length++;
+		printf("插入成功。\n");
+  		return temp;
+} 
+
+//删除数据元素
+SqList*	 ListDelete(SqList *L, int i){
+	int j;
+	SqList *temp = L;
+	if(i< 1||i > temp->length)   printf("illegel input\n");
+	i--;
+	for(j = i ; j < temp->length; j++)
+	  temp->data[j] = temp->data[j+1];
+	temp->length--;
+	return temp; 
+} 
+
+//后继计算
+ElemType SucElem(SqList *L, int i){
+	if(i >= L->length)  printf("illegel input\n");
+	return (L->data[i]);
+} 
+
+//前驱运算
+ElemType PreElem(SqList *L, int i){
+	if(i <= 1)  printf("illegel input\n");
+	ElemType k =  L->data[i-2];
+	return k; 
+} 
+
+int main(void){
+	printf("输入10个数字以初始化线性表：\n"); 
+	ElemType a[MaxSize] ;
+	int i= 9, j = 0, num = 10;
+	while(i>=0) {
+		scanf("%d", &a[j++]);
+		i--;
+	}
+	
+	SqList *List;
+	List = CreatList(a, num);
+	printf("初始化完成！\n");
+	//初始化、长度计算、取元素、定位、前驱计算、后继计算、前插、删除、判空、遍历
+	for(;;){
+	printf("*************************************************** \n");
+	printf("输入对应数字进行操作：\n");
+    printf("1.计算长度：\n"); 
+	printf("2.取元素：\n") ;
+	printf("3.定位：\n") ;
+	printf("4.前驱计算：\n") ;
+	printf("5.后继计算：\n") ;
+	printf("6.前插：\n") ;
+	printf("7.删除元素：\n") ;
+	printf("8.判空\n") ;
+	printf("9.遍历并输出\n") ;
+	printf("其他，不存在并退出系统：\n") ;
+	printf("***************************************************\n");
+
+	int choose;
+	printf("输入您的选择: ");
+	scanf("%d", &choose);
+	switch(choose)
+	{
+	case 1:
+		ListLength(List);break;
+	case 2:
+	{
+		printf("输入要取出的元素的顺位："); 
+		int i;
+		scanf("%d", &i); 
+		GetElem(List, i);
+		break;
+	}
+	case 3:
+	{
+		printf("输入要查找的元素：");
+		ElemType i;
+		scanf("%d", &i) ;
+		LocateELem(List, i) ;
+		break;
+	}
+		case 4:
+	{
+		ElemType ch;
+		printf("输入需要查找的位置的前驱：");
+		int n;
+		scanf("%d", &n);
+		ch = PreElem(List, n);
+		printf("%d\n", ch); 
+		break;
+		
+	}
+		case 5:
+	{
+		ElemType ch1;
+		printf("输入需要查找的位置的后置：");
+		int n;
+		scanf("%d", &n);
+		ch1 = SucElem(List, n);
+		printf("%d\n", ch1); 
+		break;
+	}
+		case 6:
+	{
+		ElemType ch2;
+		printf("输入要插入的元素：");
+		scanf("%d", &ch2);
+		printf("插入的位置：");
+		int pos;
+		scanf("%d", &pos);
+	 	List = ListInsert(List,pos ,ch2); 
+	
+		break;
+	}
+		case 7:
+	{
+		ElemType ch3;
+		printf("输入要删除的元素的位置：");
+		scanf("%d", &ch3);
+		List = ListDelete(List, ch3); 
+		printf("删除成功。\n");
+		break;
+	}
+		case 8:
+	{
+		if(ListEmpty(List))
+			printf("空\n");
+		else printf("非空\n");
+		break;
+	} 
+		case 9:
+	{
+		DisplayList(List);
+		break;
+	} 
+		default:
+		exit(0);	 
+	}
+	 }
+}
