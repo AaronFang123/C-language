@@ -2,7 +2,7 @@
 
 #define MAX_NUMBER 50
 
-
+//×¢ÊÍ 
 int main(void){
 	char word[MAX_NUMBER], ch;
 	int i = 0;
